@@ -56,7 +56,7 @@
   const showSignedInState = (user, needsVerification = false, recordsReady = true) => {
     loginState.hidden = Boolean(user);
     sessionState.hidden = !user;
-    showCloudRecords(Boolean(user && !needsVerification && recordsReady));
+    showCloudRecords(Boolean(user && !needsVerification));
     resendVerificationButton.hidden = !needsVerification;
     if (user) {
       sessionMessage.textContent = needsVerification
@@ -337,7 +337,8 @@
           setMessage(authFeedback, "Sincronização em tempo real ativa.");
         }
       } catch (error) {
-        showCloudRecords(false);
+        showSignedInState(user);
+        sessionMessage.textContent = `Conectado como ${user.email}. A ficha pode ser preenchida e salva neste aparelho, mas a sincronização falhou.`;
         setMessage(authFeedback, `Não foi possível sincronizar: ${error.message}`, true);
       }
     }, error => {
